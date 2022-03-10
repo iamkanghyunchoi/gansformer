@@ -43,6 +43,8 @@ class StyleGAN2Loss(Loss):
                     cutoff = torch.empty([], dtype = torch.int64, device = ws.device).random_(1, ws.shape[2])
                     cutoff = torch.where(torch.rand([], device = ws.device) < self.style_mixing, cutoff, torch.full_like(cutoff, ws.shape[2]))
                     ws[:, :, cutoff:] = self.G(torch.randn_like(z), c, skip_w_avg_update = True, subnet = "mapping")[:, :, cutoff:]
+                    # temp = self.G(torch.randn_like(z), c, skip_w_avg_update = True, subnet = "mapping")[:, :, cutoff:]
+                    # ws[:, :, cutoff:] = temp
             if self.component_mixing > 0:
                 with torch.autograd.profiler.record_function("component_mixing"):
                     cutoff = torch.empty([], dtype = torch.int64, device = ws.device).random_(1, ws.shape[1])
